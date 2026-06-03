@@ -17,6 +17,7 @@ type WeddingScreenProps = {
 const WeddingScreen = ({ name }: WeddingScreenProps) => {
   const [fadeClass, setFadeClass] = useState("opacity-0");
   const [isOpen, setIsOpen] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
 
   // Untuk fade-in pertama kali
@@ -31,8 +32,22 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
   const handleOpen = () => {
     setIsOpen(!isOpen);
     if (!isOpen && audioRef.current) {
-      // Play music when "Open" is clicked
-      (audioRef.current as HTMLAudioElement).play();
+      const audio = audioRef.current as HTMLAudioElement;
+      audio.currentTime = 27;
+      audio.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const toggleMusic = () => {
+    if (!audioRef.current) return;
+    const audio = audioRef.current as HTMLAudioElement;
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+    } else {
+      audio.play();
+      setIsPlaying(true);
     }
   };
 
@@ -100,7 +115,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
       <div
         className="md:flex justify-center hidden items-end pb-12 w-2/3 h-1/2 md:h-full"
         style={{
-          backgroundImage: `url(/foto_1_samping.jpg)`, //refer to base 1st photo
+          backgroundImage: `url(/siregar.jpeg)`, //refer to base 1st photo
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -121,22 +136,25 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
           <div className="text-center p-5 flex flex-col h-full justify-between py-20">
             <div className="gap-y-2 md:gap-y-4 flex flex-col">
               <h5
-                className={`text-sm font-legan text-white uppercase tracking-wide fadeMain2 ${isMain2InView ? "active" : ""
-                  } `}
+                className={`text-sm font-legan text-white uppercase tracking-wide fadeMain2 ${
+                  isMain2InView ? "active" : ""
+                } `}
                 ref={main2Ref}
               >
                 The Wedding Of
               </h5>
               <h1
-                className={`text-2xl md:text-3xl font-ovo t text-white uppercase fadeMain ${isMainInView ? "active" : ""
-                  } `}
+                className={`text-2xl md:text-3xl font-ovo t text-white uppercase fadeMain ${
+                  isMainInView ? "active" : ""
+                } `}
                 ref={mainRef}
               >
                 {config.coupleNames}
               </h1>
               <h5
-                className={`text-sm  font-legan text-white uppercase tracking-wide  fadeMain2 ${isMain2InView ? "active" : ""
-                  } `}
+                className={`text-sm  font-legan text-white uppercase tracking-wide  fadeMain2 ${
+                  isMain2InView ? "active" : ""
+                } `}
                 ref={main2Ref}
               >
                 {new Date(config.eventDate).toLocaleDateString("en-US", {
@@ -173,7 +191,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
             <div
               className={`text-white h-screen flex pt-12 p-5 px-12 snap-start `}
               style={{
-                backgroundImage: `url(/slide_1.jpg)`,
+                backgroundImage: `url(/image_1.jpeg)`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -188,14 +206,16 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                 <p className="text-sm mt-5 font-legan">
                   {config.bibleVerseContent}
                 </p>
-                <p className="text-6xl mt-5 font-wonder">{config.coupleNames}</p>
+                <p className="text-6xl mt-5 font-wonder">
+                  {config.coupleNames}
+                </p>
               </div>
             </div>
             {/* Slide 2 */}
             <div
               className={`text-white h-screen flex items-end pb-16 px-12 snap-start `}
               style={{
-                backgroundImage: `url(/slide_2.jpg)`,
+                backgroundImage: `url(/image_2.jpeg)`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -209,7 +229,9 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                 <h1 className="text-xl md:text-3xl text-white  font-ovo">
                   {config.groom}
                 </h1>
-                <h3 className="font-thesignature text-2xl">About {config.groomNickName},</h3>
+                <h3 className="font-thesignature text-2xl">
+                  About {config.groomNickName},
+                </h3>
                 <p className="text-sm mt-5 font-legan text-[#CCCCCC]">
                   {config.groomBio}
                 </p>
@@ -226,7 +248,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
             <div
               className="snap-start  text-white h-screen flex items-end pb-16 px-12 "
               style={{
-                backgroundImage: `url(/slide_3.jpg)`,
+                backgroundImage: `url(/image_3.jpeg)`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -239,7 +261,9 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                 <h1 className="text-xl md:text-3xl text-white  font-ovo">
                   {config.bride}
                 </h1>
-                <h3 className="font-thesignature text-2xl">About {config.brideNickName},</h3>
+                <h3 className="font-thesignature text-2xl">
+                  About {config.brideNickName},
+                </h3>
                 <p className="text-sm mt-5 font-legan text-[#CCCCCC]">
                   {config.brideBio}
                 </p>
@@ -264,57 +288,65 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
               <div>
                 <h1
                   ref={slide4Ref}
-                  className={`text-xl md:text-5xl  text-white font-ovo fadeInMove ${isSlide4InView ? " active" : ""
-                    }`}
+                  className={`text-xl md:text-5xl  text-white font-ovo fadeInMove ${
+                    isSlide4InView ? " active" : ""
+                  }`}
                 >
                   A journey in love
                 </h1>
                 <h3
                   ref={slide4Ref}
-                  className={`uppercase font-legan text-xl mt-5 mb-2 fadeInMoveSlow ${isSlide4InView ? " active" : ""
-                    }`}
+                  className={`uppercase font-legan text-xl mt-5 mb-2 fadeInMoveSlow ${
+                    isSlide4InView ? " active" : ""
+                  }`}
                 >
                   {config.timeline_1}
                 </h3>
                 <p
                   ref={slide4Ref}
-                  className={`text-xs font-legan text-white fadeInLeftSlow ${isSlide4InView ? "active" : ""
-                    }`}
+                  className={`text-xs font-legan text-white fadeInLeftSlow ${
+                    isSlide4InView ? "active" : ""
+                  }`}
                 >
                   {config.timeline_1_content}
                 </p>
                 <h3
                   ref={slide4Ref}
-                  className={`uppercase font-legan text-xl mt-5 mb-2 fadeInMoveSlow ${isSlide4InView ? " active" : ""
-                    }`}
+                  className={`uppercase font-legan text-xl mt-5 mb-2 fadeInMoveSlow ${
+                    isSlide4InView ? " active" : ""
+                  }`}
                 >
                   {config.timeline_2}
                 </h3>
                 <p
                   ref={slide4Ref}
-                  className={`text-xs font-legan text-white fadeInLeftSlow ${isSlide4InView ? " active" : ""
-                    }`}
+                  className={`text-xs font-legan text-white fadeInLeftSlow ${
+                    isSlide4InView ? " active" : ""
+                  }`}
                 >
                   {config.timeline_2_content}
                 </p>
                 <h3
                   ref={slide4Ref}
-                  className={`uppercase font-legan text-xl mt-5 mb-2 fadeInMoveSlow ${isSlide4InView ? " active" : ""
-                    }`}
+                  className={`uppercase font-legan text-xl mt-5 mb-2 fadeInMoveSlow ${
+                    isSlide4InView ? " active" : ""
+                  }`}
                 >
                   {config.timeline_3}
                 </h3>
                 <p
                   ref={slide4Ref}
-                  className={`text-xs font-legan text-white fadeInLeftSlow ${isSlide4InView ? " active" : ""
-                    }`}
+                  className={`text-xs font-legan text-white fadeInLeftSlow ${
+                    isSlide4InView ? " active" : ""
+                  }`}
                 >
                   {config.timeline_3_content}
                 </p>
                 <div
                   ref={slide4Ref}
-                  className={`relative flex items-center mt-5 fadeInLeft ${isSlide4InView ? " active" : ""
-                    }`}
+                  className={`relative flex items-center mt-5 fadeInLeft ${
+                    isSlide4InView ? " active" : ""
+                  }`}
                 >
                   <hr className="w-[120px] mx-2 border-t border-gray-300" />
                   <span className="px-2 font-thesignature text-3xl">
@@ -327,15 +359,16 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
             <div
               className="snap-start  text-white h-screen flex flex-col items-center px-12 "
               style={{
-                backgroundImage: `url(/slide_5.jpg)`,
+                backgroundImage: `url(/image_5.jpeg)`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
             >
               <div
                 ref={slide5Ref}
-                className={` ${isSlide5InView ? "active" : ""
-                  }  fadeInMove flex items-center flex-col pt-32 `}
+                className={` ${
+                  isSlide5InView ? "active" : ""
+                }  fadeInMove flex items-center flex-col pt-32 `}
               >
                 <h3 className="uppercase font-legan text-xs tracking-wide mt-5 mb-2">
                   save our date
@@ -343,7 +376,9 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                 <h1 className="text-2xl w-[200px] text-center text-white  font-ovo uppercase">
                   {new Date(config.eventDate).toLocaleDateString("en-US", {
                     weekday: "long",
-                  })} <br />  {new Date(config.eventDate).toLocaleDateString("en-US", {
+                  })}{" "}
+                  <br />{" "}
+                  {new Date(config.eventDate).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
@@ -355,7 +390,8 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                       Holy Matrimony <br /> {config.holyMatrimony.time}
                     </h3>
                     <p className="text-sm text-center  font-legan text-white">
-                      {config.holyMatrimony.place} <br /> {config.holyMatrimony.place_details}
+                      {config.holyMatrimony.place} <br />{" "}
+                      {config.holyMatrimony.place_details}
                     </p>
                     <Link
                       href={config.holyMatrimony.googleMapsLink}
@@ -373,7 +409,8 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                       Wedding Reception <br /> {config.weddingReception.time}
                     </h3>
                     <p className="text-sm text-center  font-legan text-white">
-                      {config.weddingReception.place} <br /> {config.weddingReception.place_details}
+                      {config.weddingReception.place} <br />{" "}
+                      {config.weddingReception.place_details}
                     </p>
                     <Link
                       href={config.weddingReception.googleMapsLink}
@@ -390,15 +427,16 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
             <div
               className="snap-start  text-white h-screen flex flex-col items-center justify-end pb-16 px-12 "
               style={{
-                backgroundImage: `url(/slide_6.jpg)`,
+                backgroundImage: `url(/image_6.jpeg)`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
             >
               <div
                 ref={slide6Ref}
-                className={` ${isSlide6InView ? "active" : ""
-                  }  fadeInMove flex items-center flex-col`}
+                className={` ${
+                  isSlide6InView ? "active" : ""
+                }  fadeInMove flex items-center flex-col`}
               >
                 <h1 className="text-2xl text-center text-white  font-ovo">
                   ALMOST TIME FOR OURCELEBRATION
@@ -408,26 +446,28 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
               </div>
             </div>
             {/* Slide 7 */}
-            {config.livestreaming.enabled && (
+            {/* {config.livestreaming.enabled && (
               <div
                 className="snap-start  text-white h-screen flex flex-col justify-between pt-16 pb-32 px-12 "
                 style={{
-                  backgroundImage: `url(/foto_1_samping.jpg)`,
+                  backgroundImage: `url(/siregar.jpeg)`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}
               >
                 <h1
                   ref={slide7Ref}
-                  className={`text-2xl text-white  font-ovo fadeInMoveSlow ${isSlide7InView ? "active" : ""
-                    }`}
+                  className={`text-2xl text-white  font-ovo fadeInMoveSlow ${
+                    isSlide7InView ? "active" : ""
+                  }`}
                 >
                   JOIN OUR EXCLUSIVE LIVE STREAMING EVENT
                 </h1>
 
                 <div
-                  className={`mt-5 mx-auto flex flex-col fadeInMove ${isSlide7InView ? "active" : ""
-                    }`}
+                  className={`mt-5 mx-auto flex flex-col fadeInMove ${
+                    isSlide7InView ? "active" : ""
+                  }`}
                   ref={slide7Ref}
                 >
                   <h3 className="uppercase font-ovo text-sm mt-5 mb-2">
@@ -450,13 +490,14 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                     Join Live Streaming
                   </Link>
                 </div>
-              </div>)}
+              </div>
+            )} */}
             {/* SLIDE 8 */}
             {config.prewedding.enabled && (
               <div
                 className="snap-start text-white h-screen flex flex-col justify-center pt-16 pb-16 px-8 "
                 style={{
-                  backgroundImage: `url(/slide_8.jpg)`,
+                  backgroundImage: `url(/image_8.jpeg)`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}
@@ -488,39 +529,40 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
                     </p>
                   </div>
                 </div>
-              </div>)}
+              </div>
+            )}
 
             {/* SLIDE 9 */}
             {config.rsvp.enabled && (
-            <div
-              className="snap-start text-white h-screen flex flex-col justify-center pt-16 pb-16 px-8"
-              style={{
-                backgroundImage: `url(/slide_9.jpg)`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            >
               <div
-                ref={slide9Ref}
-                className={`${isSlide9InView ? "active" : ""} fadeInMove`}
+                className="snap-start text-white h-screen flex flex-col justify-center pt-16 pb-16 px-8"
+                style={{
+                  backgroundImage: `url(/image_9.jpeg)`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
               >
-                <h1 className="text-3xl text-white font-ovo text-center uppercase">
-                  RSVP AND WISHES
-                </h1>
-                <p className="text-sm font-legan text-white/80 text-center">
-                {config.rsvp.detail}
-                </p>
+                <div
+                  ref={slide9Ref}
+                  className={`${isSlide9InView ? "active" : ""} fadeInMove`}
+                >
+                  <h1 className="text-3xl text-white font-ovo text-center uppercase">
+                    RSVP AND WISHES
+                  </h1>
+                  <p className="text-sm font-legan text-white/80 text-center">
+                    {config.rsvp.detail}
+                  </p>
 
-                <Form />
+                  <Form />
+                </div>
               </div>
-            </div>
             )}
 
             {/* SLIDE 10 */}
             <div
               className="snap-start text-white h-screen flex flex-col justify-center pt-16 pb-16 px-8"
               style={{
-                backgroundImage: `url(/slide_9.jpg)`,
+                backgroundImage: `url(/image_9.jpeg)`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -540,7 +582,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
             <div
               className="snap-start text-white h-screen flex flex-col justify-end pt-16 pb-16 px-12 "
               style={{
-                backgroundImage: `url(/slide_7.jpg)`,
+                backgroundImage: `url(/image_7.jpeg)`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -573,8 +615,43 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
           </>
         )}
       </div>
+      {/* Music Toggle Button */}
+      {isOpen && (
+        <button
+          onClick={toggleMusic}
+          className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white shadow-lg hover:bg-white/30 transition-all"
+        >
+          {isPlaying ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-5 h-5"
+            >
+              <path
+                fillRule="evenodd"
+                d="M6.75 5.25a.75.75 0 0 1 .75-.75H9a.75.75 0 0 1 .75.75v13.5a.75.75 0 0 1-.75.75H7.5a.75.75 0 0 1-.75-.75V5.25zm7.5 0A.75.75 0 0 1 15 4.5h1.5a.75.75 0 0 1 .75.75v13.5a.75.75 0 0 1-.75.75H15a.75.75 0 0 1-.75-.75V5.25z"
+                clipRule="evenodd"
+              />
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-5 h-5"
+            >
+              <path
+                fillRule="evenodd"
+                d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653z"
+                clipRule="evenodd"
+              />
+            </svg>
+          )}
+        </button>
+      )}
       {/* Audio Element */}
-      <audio ref={audioRef} src="/music/wedding_song.mp3" preload="auto" />
+      <audio ref={audioRef} src="/music/Asmara.mp3" preload="auto" />
     </div>
   );
 };
