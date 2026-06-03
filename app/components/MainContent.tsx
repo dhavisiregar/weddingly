@@ -80,6 +80,7 @@ const WeddingScreen = ({ name }: WeddingScreenProps) => {
   const { ref: slide6Ref, inView: isSlide6InView } = useInView({
     threshold: 0.5,
   });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { ref: slide7Ref, inView: isSlide7InView } = useInView({
     threshold: 0.5,
   });
